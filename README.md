@@ -2,7 +2,7 @@
 
 An Android app built with Kotlin + Jetpack Compose that showcases movies and TV series using TMDB API.
 
-🌟 Features
+## 🌟 Features
 - Popular Movies & TV Series
 - Detailed Description of Movies & Series
 - Good UI and visuals
@@ -19,7 +19,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 
 ## 🔗 API Reference
 [TMDB API](https://developer.themoviedb.org/)
-.......
+##
 [Mailroo](https://app.maileroo.com/)
 
 ## 👨‍💻 Developer
