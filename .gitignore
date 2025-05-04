@@ -13,3 +13,13 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Android-specific
+/.idea/
+/*.iml
+/build/
+/captures/
+/.DS_Store
+# OS
+Thumbs.db
+ehthumbs.db
+
