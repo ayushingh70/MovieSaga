@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "735198476303",
+    "project_id": "moviesaga",
+    "storage_bucket": "moviesaga.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735198476303:android:7ca1eda7db7ac1e2efcb7a",
+        "android_client_info": {
+          "package_name": "com.example.moviesaga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735198476303-t0mcje8tmp2ob0c4igtbud6ktv5u7m3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moviesaga",
+            "certificate_hash": "53871018d1e4e56980991c52950710a2a314d5bc"
+          }
+        },
+        {
+          "client_id": "735198476303-gakdkub30905esevvuv03gbcukkc0sf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWP0x9ZvU9pcJALQjMoEeBnDKe-RjSzck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735198476303-gakdkub30905esevvuv03gbcukkc0sf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
