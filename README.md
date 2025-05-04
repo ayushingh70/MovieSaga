@@ -24,8 +24,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 
 ## 👨‍💻 Developer
 - Ayush — [GitHub](https://github.com/KillerOfCheater)
-
-Contact - aniketom70@gmail.com
+- Contact - aniketom70@gmail.com
 
 Improvements Coming Soon...
 Images will be added soon to showcase App
