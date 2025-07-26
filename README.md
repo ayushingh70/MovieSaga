@@ -23,7 +23,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 [Mailroo](https://app.maileroo.com/)
 
 ## 👨‍💻 Developer
-- Ayush — [GitHub](https://github.com/KillerOfCheater)
+- Ayush — [GitHub](https://github.com/ayushingh70)
 - Contact - aniketom70@gmail.com
 
 Improvements Coming Soon...
