@@ -32,7 +32,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 - Ayush - [LinkedIn](linkedin.com/in/ayush-singh-769b61315)
 - Contact - aniketom70@gmail.com
 
-## 🖼 Image
+## 🖼 Screenshots
 ![ShowCase_1](https://github.com/user-attachments/assets/32f274ca-d00e-42c8-9895-63ee092b592e)
 ![ShowCase_2](https://github.com/user-attachments/assets/e215e525-bfe5-4155-a639-961ffd75e78e)
 
