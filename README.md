@@ -5,17 +5,22 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 ## 🌟 Features
 - Popular Movies & TV Series
 - Detailed Description of Movies & Series
+- Actors & Actress
+- Detailed Description of Actors & Actress
 - Good UI and visuals
-- Firebase Auth & Realtime Comments
+- Firebase Auth ( For Register/Login )
+- Realtime Database ( For Chats & Ratings )
 - Search Bar
-- All lists of Actors/Actresses
+- Favorite List & Watch List
+- Settings ( Contact Support , Clear Cache , Clear Cache , Device Info )
 
 ## 🛠️ Built With
 - Kotlin
 - Jetpack Compose
+- MVVM
 - Firebase
 - TMDB API
-- GitHub Actions (optional)
+- Json Parsing
 
 ## 🔗 API Reference
 [TMDB API](https://developer.themoviedb.org/)
@@ -23,7 +28,8 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 [Mailroo](https://app.maileroo.com/)
 
 ## 👨‍💻 Developer
-- Ayush — [GitHub](https://github.com/KillerOfCheater)
+- Ayush - [GitHub](https://github.com/ayushingh70)
+- Ayush - [LinkedIn](linkedin.com/in/ayush-singh-769b61315)
 - Contact - aniketom70@gmail.com
 
 ## 🖼 Screenshots
@@ -32,4 +38,3 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 
 
 Improvements Coming Soon...
-Images will be added soon to showcase App
