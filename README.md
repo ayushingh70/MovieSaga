@@ -9,7 +9,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 - Detailed Description of Actors & Actress
 - Good UI and visuals
 - Firebase Auth ( For Register/Login )
-- Realtime Database ( For Chats )
+- Realtime Database ( For Chats & Ratings )
 - Search Bar
 - Favorite List & Watch List
 - Settings ( Contact Support , Clear Cache , Clear Cache , Device Info )
