@@ -24,6 +24,7 @@ An Android app built with Kotlin + Jetpack Compose that showcases movies and TV 
 
 ## 👨‍💻 Developer
 - Ayush — [GitHub](https://github.com/ayushingh70)
+- Ayush - [LinkedIn](linkedin.com/in/ayush-singh-769b61315)
 - Contact - aniketom70@gmail.com
 
 Improvements Coming Soon...
