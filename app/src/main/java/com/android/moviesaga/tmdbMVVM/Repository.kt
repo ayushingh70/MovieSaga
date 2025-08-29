@@ -20,8 +20,8 @@ import com.example.moviesaga.tmdbapidataclass.Series.SeriesDetailsOneData
 import com.example.moviesaga.tmdbapidataclass.Series.SeriesVideosOneData
 
 class Repository {
-    val maileroo_api_key = "Bearer c4982e3820a23176986337abb4958e5a2919259ab3b6fc334125e52b32964f11" // website - https://app.maileroo.com/smtp-relay
-    val tmdb_api_key = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzNhMDQxN2VhYzJjNDI1Y2NlZjQzYzQwZDU0Y2I5YSIsIm5iZiI6MTc0MDI2OTI0MC40Mywic3ViIjoiNjdiYTY2YjhhOTZkYzE4OTc5YmViNzgzIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.7Nc9X5k1oCLph2gAsBRXifwnvpDyz7pKM_0tYmJGETQ" // website - https://developer.themoviedb.org/reference/intro/getting-started
+    val maileroo_api_key = "YOUR_MAILRO_API_KEY_HERE" // website - https://app.maileroo.com/smtp-relay ( Use Bearer before key such as Bearer fn89h....)
+    val tmdb_api_key = "YOUR_TMDB_API KEY_HERE" // website - https://developer.themoviedb.org/reference/intro/getting-started ( Use Bearer before key such as Bearer fn89h....)
 
     private val apiServices = RetrofitBuilder.getApi
 
