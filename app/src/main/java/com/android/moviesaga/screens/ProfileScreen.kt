@@ -6,11 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +21,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +45,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.moviesaga.R
 import com.google.firebase.database.DatabaseReference
 import androidx.compose.ui.draw.clip
-
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.graphics.Brush
 
 
 @Composable
@@ -54,20 +57,24 @@ fun Profile(
     auth: FirebaseAuth,
     goToOnBoardingScreen: () -> Unit,
     goToBackStack: () -> Unit,
-    goToFavouriteScreen:()->Unit,
-    goToWatchlistScreen:()->Unit,
-    goToPremiumTabScreen:()->Unit,
+    goToFavouriteScreen: () -> Unit,
+    goToWatchlistScreen: () -> Unit,
+    goToPremiumTabScreen: () -> Unit
 ) {
-    //if already login then show logout button
-    var name by remember { //username
-        mutableStateOf("")
-    }
-    if (auth.currentUser == null) {
+    var name by remember { mutableStateOf("") }
+    var alertBox by remember { mutableStateOf(false) }
+
+    val user = auth.currentUser
+
+    if (user == null) {
         Column(
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1f1f1f)),
+                .background(Color(0xFF1f1f1f))
+                .padding(20.dp)
+                .statusBarsPadding(),
             verticalArrangement = Arrangement.Center,
+
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -77,419 +84,239 @@ fun Profile(
                 color = Color(0xFFE0E0E0),
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
-                    .height(70.dp)
-                    .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Image(
-                    painterResource(id = R.drawable.star),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .size(40.dp)
-                )
-                Text(
-                    "Rate Movies and TV shows",
-                    color = Color(0xFFE0E0E0),
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.interfont)),
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                )
-            }
 
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
-                    .height(70.dp)
-                    .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Image(
-                    painterResource(id = R.drawable.bookmark),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .size(40.dp)
-                )
-                Text(
-                    "Manage your watchlist",
-                    color = Color(0xFFE0E0E0),
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.interfont)),
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                )
-            }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
-                    .height(70.dp)
-                    .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Image(
-                    painterResource(id = R.drawable.premium),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .size(40.dp)
-                )
-                Text(
-                    "Get Premium Features",
-                    color = Color(0xFFE0E0E0),
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.interfont)),
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                )
-            }
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
-                    .height(70.dp)
-                    .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Image(
-                    painterResource(id = R.drawable.list),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .size(40.dp)
-                )
-                Text(
-                    "Create your list of movies and series",
-                    color = Color(0xFFE0E0E0),
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.interfont)),
-                    modifier = Modifier.fillMaxWidth(0.8f)
-                )
-            }
-        }
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            ProfileFeatureItem(icon = R.drawable.star, text = "Rate Movies and TV shows")
+            ProfileFeatureItem(icon = R.drawable.bookmark, text = "Manage your watchlist")
+            ProfileFeatureItem(icon = R.drawable.premium, text = "Get Premium Features")
+            ProfileFeatureItem(icon = R.drawable.list, text = "Create your list of movies and series")
+
+            Spacer(modifier = Modifier.height(40.dp))
+
             Button(
-                onClick = {
-                    goToOnBoardingScreen()
-                },
+                onClick = { goToOnBoardingScreen() },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 30.dp)
-                    .size(70.dp)
+                    .height(55.dp),
+                shape = RoundedCornerShape(50),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9B59B6))
             ) {
                 Text(
-                    "Login/SignUp",
-                    color = Color(0xFFE0E0E0),
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily(Font(R.font.interfont)),
-                    modifier = Modifier.fillMaxWidth(0.8f),
-                    textAlign = TextAlign.Center
+                    "Login / Sign Up",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.interbold))
                 )
             }
         }
-
     } else {
         val dbRef = databaseReference.child("users").child(auth.currentUser!!.uid)
-        dbRef.child("username").get()
-            .addOnSuccessListener { snapshot ->
-                val username = snapshot.getValue(String::class.java)
-                if (!username.isNullOrEmpty()) {
-                    // If username exists in database, show it
-                    name = username
-                } else {
-                    // If username doesn't exist, use Gmail Profile Name
-                    val googleName = auth.currentUser?.displayName
-                    if (!googleName.isNullOrEmpty()) {
-                        name = googleName
-                    } else {
-                        // If Gmail Profile Name also missing, show default
-                        name = "Unknown User"
-                    }
-                }
-            }
-            .addOnFailureListener {
-                // If Firebase fails, fallback to Gmail Name
-                val googleName = auth.currentUser?.displayName
-                if (!googleName.isNullOrEmpty()) {
-                    name = googleName
-                } else {
-                    name = "Unknown User"
-                }
-            }
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color(0xFF1f1f1f))
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .fillMaxWidth()
-                        .background(Color.Black)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .fillMaxHeight(), verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.back), contentDescription =
-                        "back",
-                        modifier = Modifier
-                            .padding(start = 13.dp)
-                            .size(16.dp)
-                            .clickable(
-                                onClick = {
-                                    goToBackStack()
-                                }
-                            )
-                    )
-                    //more content on top Row
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .background(Color(0xFF2e2d2d)),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val user = auth.currentUser
-                    val profilePicUrl = user?.photoUrl
-
-                    if (user != null && profilePicUrl != null) {
-                        // Show Gmail DP if signed in with Gmail OR Firebase DP if available
-                        Image(
-                            painter = rememberAsyncImagePainter(model = profilePicUrl),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(90.dp)
-                                .clip(RoundedCornerShape(50.dp))
-                        )
-                    } else {
-                        // Show App Icon if no login or no profile picture available
-                        Image(
-                            painterResource(R.drawable.appicon),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .clip(RoundedCornerShape(50.dp))
-                        )
-                    }
-
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    Column {
-                        Text(
-                            "Hello,",
-                            color = Color(0xFFE0E0E0),
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.interfont)),
-                        )
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = name,
-                                color = Color(0xFFE0E0E0),
-                                fontSize = 25.sp,
-                                fontFamily = FontFamily(Font(R.font.interfont)),
-                            )
-                        }
-
-                    }
-                }
-                var alertBox by remember {
-                    mutableStateOf(false)
-                }
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Column(Modifier.padding(top = 20.dp)) {
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, end = 10.dp)
-                                .height(70.dp)
-                                .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp))
-                                .clickable(onClick = {
-                                    goToFavouriteScreen()
-                                }),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(start = 10.dp),
-                                horizontalArrangement = Arrangement.spacedBy(15.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painterResource(id = R.drawable.favourite),
-                                    contentDescription = null,
-                                    Modifier.size(40.dp)
-                                )
-                                Text(
-                                    "Favourite",
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily(Font(R.font.interbold)),
-                                    color = Color(0xFFE0E0E0)
-                                )
-                            }
-                            Image(
-                                painterResource(id = R.drawable.back), contentDescription = null,
-                                Modifier
-                                    .padding(end = 10.dp)
-                                    .rotate(180f)
-                                    .size(20.dp)
-                            )
-                        }
-
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, end = 10.dp)
-                                .height(70.dp)
-                                .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp))
-                                .clickable(onClick = {
-                                    goToWatchlistScreen()
-                                }),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(start = 10.dp),
-                                horizontalArrangement = Arrangement.spacedBy(15.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painterResource(id = R.drawable.bookmark),
-                                    contentDescription = null,
-                                    Modifier.size(40.dp)
-                                )
-                                Text(
-                                    "Watchlist",
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily(Font(R.font.interbold)),
-                                    color = Color(0xFFE0E0E0)
-                                )
-                            }
-                            Image(
-                                painterResource(id = R.drawable.back), contentDescription = null,
-                                Modifier
-                                    .padding(end = 10.dp)
-                                    .rotate(180f)
-                                    .size(20.dp)
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, end = 10.dp)
-                                .height(70.dp)
-                                .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp))
-                                .clickable(onClick = {
-                                    goToPremiumTabScreen()
-                                }),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(start = 10.dp),
-                                horizontalArrangement = Arrangement.spacedBy(15.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painterResource(id = R.drawable.premium),
-                                    contentDescription = null,
-                                    Modifier.size(40.dp)
-                                )
-                                Text(
-                                    "Premium",
-                                    fontSize = 18.sp,
-                                    fontFamily = FontFamily(Font(R.font.interbold)),
-                                    color = Color(0xFFE0E0E0)
-                                )
-                            }
-                            Image(
-                                painterResource(id = R.drawable.back), contentDescription = null,
-                                Modifier
-                                    .padding(end = 10.dp)
-                                    .rotate(180f)
-                                    .size(20.dp)
-                            )
-                        }
-
-
-                    }
-
-                    Button(
-                        onClick = {
-                            alertBox = true
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 30.dp)
-                            .size(70.dp)
-                            .align(Alignment.BottomEnd)
-                    ) {
-                        Text(
-                            "Log Out",
-                            color = Color(0xFFE0E0E0),
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.interfont)),
-                            modifier = Modifier.fillMaxWidth(0.8f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-                if (alertBox) {
-                    AlertDialog(
-                        onDismissRequest = { alertBox = false },
-                        confirmButton = {
-                            Button(onClick = {
-                                auth.signOut()
-                                goToOnBoardingScreen()
-                            }) {
-                                Text(text = "Yes")
-                            }
-                        },
-                        dismissButton = {
-                            Button(onClick = {
-                                alertBox = false
-                            }) {
-                                Text(text = "NO")
-                            }
-                        },
-                        title = {
-                            Text("Confirm Logout?")
-                        },
-                        text = {
-                            Text("Are you sure you want to logout?")
-                        }
-
-                    )
-
-                }
-
+        LaunchedEffect(Unit) {
+            dbRef.child("username").get().addOnSuccessListener { snapshot ->
+                name = snapshot.getValue(String::class.java) ?: user.displayName ?: "Unknown User"
+            }.addOnFailureListener {
+                name = user.displayName ?: "Unknown User"
             }
         }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(0xFF111111), Color(0xFF222222))
+                    )
+                )
+                .verticalScroll(rememberScrollState())
+                .statusBarsPadding()
+        ) {
+            // Top Bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.back),
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { goToBackStack() }
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Your Profile",
+                    fontSize = 20.sp,
+                    color = Color.White,
+                    fontFamily = FontFamily(Font(R.font.interbold))
+                )
+            }
+
+            // Profile Info
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(18.dp))
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val profilePicUrl = user.photoUrl
+                if (profilePicUrl != null) {
+                    Image(
+                        painter = rememberAsyncImagePainter(profilePicUrl),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(CircleShape)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.appicon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(CircleShape)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+                Column {
+                    Text(
+                        text = "Hello,",
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.interfont)),
+                        color = Color.LightGray
+                    )
+                    Text(
+                        text = name,
+                        fontSize = 22.sp,
+                        fontFamily = FontFamily(Font(R.font.interbold)),
+                        color = Color.White
+                    )
+                }
+            }
+
+            // Options
+            Spacer(modifier = Modifier.height(10.dp))
+            ProfileOptionItem(icon = R.drawable.favourite, text = "Favourite", onClick = goToFavouriteScreen)
+            ProfileOptionItem(icon = R.drawable.bookmark, text = "Watchlist", onClick = goToWatchlistScreen)
+            ProfileOptionItem(icon = R.drawable.premium, text = "Premium", onClick = goToPremiumTabScreen)
+
+            Spacer(modifier = Modifier.height(340.dp))
+
+            Button(
+                onClick = { alertBox = true },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .height(65.dp),
+                shape = RoundedCornerShape(40),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC93E3E))
+            ) {
+                Text(
+                    "Log Out",
+                    color = Color.White,
+                    fontSize = 19.sp,
+                    fontFamily = FontFamily(Font(R.font.interbold))
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+
+        if (alertBox) {
+            AlertDialog(
+                onDismissRequest = { alertBox = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        auth.signOut()
+                        goToOnBoardingScreen()
+                    }) {
+                        Text("Yes", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { alertBox = false }) {
+                        Text("No", color = Color.White)
+                    }
+                },
+                title = { Text("Confirm Logout?", color = Color.White) },
+                text = { Text("Are you sure you want to logout?", color = Color.White) },
+                containerColor = Color(0xFF2e2d2d)
+            )
+        }
+    }
+}
+
+// Reusable UI section
+@Composable
+fun ProfileFeatureItem(icon: Int, text: String) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .height(70.dp)
+            .background(Color(0xFF2e2d2d), shape = RoundedCornerShape(10.dp)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .size(30.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text,
+            color = Color(0xFFE0E0E0),
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.interfont))
+        )
+    }
+}
+
+@Composable
+fun ProfileOptionItem(icon: Int, text: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 8.dp)
+            .height(70.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color(0xFF2e2d2d))
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = icon),
+                contentDescription = null,
+                modifier = Modifier.size(30.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text,
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.interbold)),
+                color = Color.White
+            )
+        }
+
+        Icon(
+            painter = painterResource(id = R.drawable.back),
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(20.dp)
+                .rotate(180f)
+        )
     }
 }

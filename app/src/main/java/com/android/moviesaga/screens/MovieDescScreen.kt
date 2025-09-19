@@ -50,6 +50,8 @@ import coil3.compose.rememberAsyncImagePainter
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import com.example.moviesaga.designs.DotPageIndicator
@@ -99,20 +101,27 @@ fun MovieDescScreen(databaseReference: DatabaseReference,auth: FirebaseAuth, vie
     }
 
     if (movieDetail != null) {
-        Box( modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black) ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF111111),
+                            Color(0xFF222222)
+                        )
+                    )
+                )
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFF1f1f1f))
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(
                     modifier = Modifier
                         .height(40.dp)
                         .fillMaxWidth()
-                        .background(Color.Black)
                 )
                 Row(
                     modifier = Modifier

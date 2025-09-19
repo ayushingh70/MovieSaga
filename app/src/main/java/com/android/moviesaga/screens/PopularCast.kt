@@ -1,5 +1,11 @@
 package com.android.moviesaga.screens
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +21,9 @@ import coil.compose.AsyncImage
 import com.example.moviesaga.tmdbMVVM.ViewModel
 import androidx.navigation.NavController
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,6 +34,9 @@ import androidx.compose.ui.unit.sp
 import com.example.moviesaga.R
 import com.example.moviesaga.designs.BottomNavigatorDesign
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Brush
 import com.example.moviesaga.components.SearchBarComponent
 
 @Composable
@@ -60,12 +71,29 @@ fun PopularCast(
                 }
             }
     }
-
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF111111),
+                        Color(0xFF222222)
+                    )
+                )
+            )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1f1f1f))
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF111111),
+                            Color(0xFF222222)
+                        )
+                    )
+                )
         ) {
             // 🔝 Top Bar (UNCHANGED)
             Row(
@@ -87,18 +115,49 @@ fun PopularCast(
                         .clickable { goToProfileScreen() }
                 )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.appicon),
-                        contentDescription = "appicon",
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Text(
-                        text = "MovieSaga",
-                        fontSize = 13.sp,
-                        color = Color.White,
-                        fontFamily = FontFamily(Font(R.font.interbold))
-                    )
+                val infiniteTransition = rememberInfiniteTransition(label = "")
+                val glowAlpha by infiniteTransition.animateFloat(
+                    initialValue = 0.4f,
+                    targetValue = 1f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(1000, easing = LinearEasing),
+                        repeatMode = RepeatMode.Reverse
+                    ),
+                    label = "glow"
+                )
+
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 2.dp,
+                            brush = Brush.linearGradient(
+                                listOf(
+                                    Color(0xFF00B4FF).copy(alpha = glowAlpha),
+                                    Color(0xFF00C853).copy(alpha = glowAlpha),
+                                    Color(0xFFFF9800).copy(alpha = glowAlpha)
+                                )
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.appicon),
+                            contentDescription = "appicon",
+                            modifier = Modifier.size(45.dp)
+                        )
+                        Text(
+                            text = "MovieSaga",
+                            fontSize = 13.sp,
+                            color = Color.White,
+                            fontFamily = FontFamily(Font(R.font.interbold))
+                        )
+                    }
                 }
 
                 Image(

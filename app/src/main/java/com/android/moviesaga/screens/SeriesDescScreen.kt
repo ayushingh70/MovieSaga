@@ -37,6 +37,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -99,20 +100,27 @@ fun SeriesDescScreen(databaseReference: DatabaseReference,auth:FirebaseAuth,view
 
 
     if (seriesDetail != null) {
-        Box( modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black) ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF111111),
+                            Color(0xFF222222)
+                        )
+                    )
+                )
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFF1f1f1f))
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(
                     modifier = Modifier
                         .height(40.dp)
                         .fillMaxWidth()
-                        .background(Color.Black)
                 )
                 Row(
                     modifier = Modifier

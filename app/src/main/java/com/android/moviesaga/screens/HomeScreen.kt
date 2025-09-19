@@ -1,8 +1,15 @@
 package com.example.moviesaga.screens
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,31 +59,26 @@ import androidx.compose.runtime.getValue
 
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    viewModel: ViewModel,
-    goToSeriesDescScreen: (id: Int) -> Unit,
-    goToMovieDescScreen: (id: Int) -> Unit,
-    goToHomeScreen:()->Unit,
-    goToMovieTabScreen:()->Unit,
-    goToSeriesTabScreen:()->Unit,
-    goToSearchScreen:()->Unit,
-    goToProfileScreen:()->Unit,
-    goToPopularCast:()->Unit,
-    goToSettingTabScreen:()->Unit,
-) {
+fun HomeScreen(navController: NavController, viewModel: ViewModel, goToSeriesDescScreen: (id: Int) -> Unit, goToMovieDescScreen: (id: Int) -> Unit, goToHomeScreen:()->Unit, goToMovieTabScreen:()->Unit, goToSeriesTabScreen:()->Unit, goToSearchScreen:()->Unit, goToProfileScreen:()->Unit, goToPopularCast:()->Unit, goToSettingTabScreen:()->Unit, ) {
     val popularMovies = viewModel.getPopularMovies.collectAsState().value
     val popularSeries = viewModel.getPopularSeries.collectAsState().value
-    Box( modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Black) ) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF111111),
+                        Color(0xFF222222)
+                    )
+                )
+            )
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1f1f1f))
                 .verticalScroll(rememberScrollState())
         ) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,18 +100,49 @@ fun HomeScreen(
                         })
                 )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.appicon),
-                        contentDescription = "appicon",
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Text(
-                        text = "MovieSaga",
-                        fontSize = 13.sp,
-                        color = Color.White,
-                        fontFamily = FontFamily(Font(R.font.interbold))
-                    )
+                val infiniteTransition = rememberInfiniteTransition(label = "")
+                val glowAlpha by infiniteTransition.animateFloat(
+                    initialValue = 0.4f,
+                    targetValue = 1f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(1000, easing = LinearEasing),
+                        repeatMode = RepeatMode.Reverse
+                    ),
+                    label = "glow"
+                )
+
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 2.dp,
+                            brush = Brush.linearGradient(
+                                listOf(
+                                    Color(0xFF00B4FF).copy(alpha = glowAlpha),
+                                    Color(0xFF00C853).copy(alpha = glowAlpha),
+                                    Color(0xFFFF9800).copy(alpha = glowAlpha)
+                                )
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.appicon),
+                            contentDescription = "appicon",
+                            modifier = Modifier.size(45.dp)
+                        )
+                        Text(
+                            text = "MovieSaga",
+                            fontSize = 13.sp,
+                            color = Color.White,
+                            fontFamily = FontFamily(Font(R.font.interbold))
+                        )
+                    }
                 }
                 Image(
                     painter = painterResource(id = R.drawable.searchicon),
@@ -143,7 +177,6 @@ fun HomeScreen(
                     R.drawable.thumbnail11,
                     R.drawable.thumbnail12
                 )
-
                 var currentIndex by remember { mutableStateOf(0) }
                 var isVideoPlaying by remember { mutableStateOf(true) }
 
@@ -153,7 +186,6 @@ fun HomeScreen(
                         currentIndex = (currentIndex + 1) % thumbnails.size
                     }
                 }
-
                 Card(
                     modifier = Modifier
                         .padding(top = 25.dp, start = 12.dp, end = 12.dp)
@@ -191,7 +223,6 @@ fun HomeScreen(
                                     )
                                 )
                         )
-
                         // ✍️ Centered Text
                         Column(
                             modifier = Modifier
@@ -209,21 +240,26 @@ fun HomeScreen(
                                 text = "A world of movies and TV series",
                                 color = Color.White,
                                 fontFamily = FontFamily(Font(R.font.robotomedium)),
-                                fontSize = 16.sp
+                                fontSize = 18.sp
                             )
                             Text(
                                 text = "Where every story unfolds",
                                 color = Color.White,
                                 fontFamily = FontFamily(Font(R.font.robotomedium)),
-                                fontSize = 14.sp
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Explore",
+                                color = Color.White,
+                                fontFamily = FontFamily(Font(R.font.robotomedium)),
+                                fontSize = 18.sp
                             )
                         }
                     }
                 }
             }
             AnimatedThumbnail()
-
-
             if (popularMovies == null) {
                 Box(
                     modifier = Modifier
@@ -235,8 +271,6 @@ fun HomeScreen(
             } else {
                 LazyRowMoviesDesign(popularMovies, "Popular Movies", goToMovieDescScreen)
             }
-
-
             if (popularSeries == null) {
                 Box(
                     modifier = Modifier

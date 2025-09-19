@@ -28,6 +28,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.Brush
 
 
 @Composable
@@ -43,12 +44,18 @@ fun PersonDetailScreen(
         viewModel.getPersonDetails(personId)
         viewModel.getPersonCredits(personId)
     }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-    ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF111111),
+                                Color(0xFF222222)
+                            )
+                        )
+                    )
+            ) {
         if (person == null) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {

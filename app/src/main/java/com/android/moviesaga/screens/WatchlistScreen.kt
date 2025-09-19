@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -102,21 +103,35 @@ fun WatchlistScreen(auth: FirebaseAuth, databaseReference: DatabaseReference, go
     }
 
 
-
-    Box( modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Black) ) {
+            Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF111111),
+                            Color(0xFF222222)
+                        )
+                    )
+                )
+            ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1f1f1f))
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF111111),
+                            Color(0xFF222222)
+                        )
+                    )
+                )
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(
                 modifier = Modifier
                     .height(40.dp)
                     .fillMaxWidth()
-                    .background(Color.Black)
             )
             Row(
                 modifier = Modifier
