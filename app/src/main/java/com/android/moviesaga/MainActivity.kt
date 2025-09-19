@@ -1,7 +1,6 @@
 package com.example.moviesaga
 
 import MyAppTheme
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -24,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavType
@@ -60,7 +58,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.Manifest
 import com.android.moviesaga.screens.PersonDetailScreen
 import com.android.moviesaga.screens.PopularCast
-
 
 class MainActivity : ComponentActivity() {
     private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
@@ -243,8 +240,6 @@ fun MyApp(viewModel: ViewModel) {
                     navController.navigate("allmovievideosscreen/$it")
                 })
         }
-
-
 
         composable("seriesdescscreen/{id}",
             enterTransition = { fasterEnterTransition() },
